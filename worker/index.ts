@@ -25,6 +25,16 @@ interface LeadPayload {
   source?: string;
 }
 
+async function sendTelegram(token: string, chatId: string, text: string) {
+  const res = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ chat_id: chatId, text }),
+  });
+  const data: any = await res.json().catch(() => ({}));
+  return { res, data };
+}
+
 async function handleLead(request: Request, env: Env): Promise<Response> {
   let body: LeadPayload;
   try {
@@ -55,18 +65,27 @@ async function handleLead(request: Request, env: Env): Promise<Response> {
     .join("\n");
 
   try {
-    const tgResponse = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ chat_id: chatId, text }),
-    });
+    let { res, data } = await sendTelegram(token, chatId, text);
 
-    const tgData: any = await tgResponse.json().catch(() => ({}));
-    if (!tgResponse.ok) {
-      console.error("Telegram API error:", tgData);
-      return Response.json({ error: "Telegram send failed", detail: tgData }, { status: 502 });
+    // A regular group silently becomes a *supergroup* the first time its settings
+    // change (a new admin, visible history, member growth, etc.), and its chat id
+    // changes with it. Telegram rejects the stale id but hands back the new one —
+    // retry once so the lead still lands, and log the new id so the secret can be
+    // updated to skip this retry next time.
+    const migratedId = data?.parameters?.migrate_to_chat_id;
+    if (!res.ok && migratedId) {
+      console.warn(
+        `Chat ${chatId} migrated to supergroup ${migratedId} — resending. ` +
+          `Update the TG_CHAT_ID secret to ${migratedId} to avoid this retry.`,
+      );
+      ({ res, data } = await sendTelegram(token, String(migratedId), text));
     }
-    return Response.json({ ok: true, message_id: tgData?.result?.message_id });
+
+    if (!res.ok) {
+      console.error("Telegram API error:", data);
+      return Response.json({ error: "Telegram send failed", detail: data }, { status: 502 });
+    }
+    return Response.json({ ok: true, message_id: data?.result?.message_id });
   } catch (error) {
     console.error("Telegram send error:", error);
     return Response.json({ error: "Telegram request failed" }, { status: 502 });
