@@ -83,6 +83,20 @@ const DetailsSection = () => {
         throw new Error(data?.errors?.[0]?.message || "Submission failed");
       }
 
+      // Notify the team on Telegram (fire-and-forget side-channel — never blocks
+      // the submission or surfaces an error to the user if it fails).
+      fetch("/api/send-lead", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          parent_name: formData.parentName,
+          email: formData.email,
+          whatsapp: formData.whatsappNumber,
+          teen_age: Number(formData.teenAge),
+          source: "WestBridge Olympiad Registration",
+        }),
+      }).catch((err) => console.error("Telegram notify failed:", err));
+
       // Track lead conversion
       if (window.fbq) {
         window.fbq('track', 'Lead');
