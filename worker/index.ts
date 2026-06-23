@@ -21,7 +21,10 @@ interface LeadPayload {
   parent_name?: string;
   email?: string;
   whatsapp?: string;
-  teen_age?: number | string;
+  student_name?: string;
+  student_grade?: string;
+  subject?: string;
+  background?: string;
   source?: string;
 }
 
@@ -56,8 +59,11 @@ async function handleLead(request: Request, env: Env): Promise<Response> {
     "",
     `👤 Parent Name: ${body.parent_name ?? "-"}`,
     `📧 Email: ${body.email ?? "-"}`,
-    `📱 WhatsApp: ${body.whatsapp ?? "-"}`,
-    `👶 Student Age: ${body.teen_age ?? "-"}`,
+    `📱 WhatsApp / Phone: ${body.whatsapp ?? "-"}`,
+    `🧑‍🎓 Student Name: ${body.student_name ?? "-"}`,
+    `📚 Grade / Year: ${body.student_grade ?? "-"}`,
+    `🎯 Interested Subject: ${body.subject ?? "-"}`,
+    body.background ? `🏫 School / Background: ${body.background}` : "",
     "",
     "#WestBridge #NewLead",
   ]

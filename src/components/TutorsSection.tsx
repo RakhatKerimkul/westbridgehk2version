@@ -7,7 +7,11 @@ const tutors = [
   {
     name: "Fettullah",
     role: "Math Coach · IMO Silver Medalist",
-    bio: "Studied Computer Science at HKUST. Believes mathematics becomes visible everywhere once students learn to think deeply.",
+    bullets: [
+      "IMO (International Math Olympiad) Silver Medalist",
+      "Studied Computer Science at HKUST",
+      "Helps students see the math hidden in everyday problems",
+    ],
     quote:
       "Olympiads are a huge advantage even after your bachelor's and master's. Companies are hunting for people who can think like this.",
     photo: fettullah.url,
@@ -16,7 +20,11 @@ const tutors = [
   {
     name: "Arseniy",
     role: "Physics Coach · 6 years teaching",
-    bio: "Winner/medalist of IJSO, Balkan Physics Olympiad, International Tuymaada, Zhautykov, and Kazakhstan Republic Physics Olympiad.",
+    bullets: [
+      "Medalist at IJSO and the Balkan Physics Olympiad",
+      "Medalist at International Tuymaada, Zhautykov, and Kazakhstan Republic Physics Olympiad",
+      "6 years of teaching experience",
+    ],
     quote: "Physics rewards students who are willing to stay with a problem after the obvious method fails.",
     photo: arseniy.url,
     objectPos: "center 15%",
@@ -24,7 +32,11 @@ const tutors = [
   {
     name: "Ahmed",
     role: "Informatics Coach · IOI Bronze",
-    bio: "HKU full scholarship. ICPC regional medalist. Two-time Kazakhstan National Olympiad gold medalist.",
+    bullets: [
+      "IOI (International Informatics Olympiad) Bronze Medalist",
+      "HKU full scholarship · ICPC regional medalist",
+      "Two-time Kazakhstan National Olympiad gold medalist",
+    ],
     quote:
       "CS is no longer optional. Students who learn algorithms early understand the world before everyone else catches up.",
     photo: ahmed.url,
@@ -51,7 +63,14 @@ const TutorsSection = () => (
             <div className="p-6 flex flex-col flex-1">
               <h3 className="text-xl font-display font-bold">{t.name}</h3>
               <p className="text-pulse-500 text-sm font-medium mb-3">{t.role}</p>
-              <p className="text-gray-700 text-sm mb-4">{t.bio}</p>
+              <ul className="text-gray-700 text-sm mb-4 space-y-1.5">
+                {t.bullets.map((point) => (
+                  <li key={point} className="flex items-start gap-2">
+                    <span className="mt-[7px] w-1.5 h-1.5 rounded-full bg-pulse-500 flex-shrink-0" />
+                    <span>{point}</span>
+                  </li>
+                ))}
+              </ul>
               <p className="text-gray-600 italic text-sm mt-auto border-l-2 border-pulse-500 pl-3">"{t.quote}"</p>
             </div>
           </div>

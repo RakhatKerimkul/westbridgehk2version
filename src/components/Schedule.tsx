@@ -8,7 +8,7 @@ interface Node {
 }
 
 const nodes: Node[] = [
-  { num: "01", title: "The Thinking Test", caption: "HK$300 — the entry gate" },
+  { num: "01", title: "The Thinking Test", caption: "The entry gate" },
   { num: "02", title: "Choose Your Discipline", caption: "Math · Physics · Chemistry · Biology · Informatics" },
   { num: "03", title: "Preparation", caption: "Weekly coaching · problem sets · mock olympiads · mentorship", wide: true },
   { num: "04", title: "Win the Olympiad", caption: "Regional → National → International" },

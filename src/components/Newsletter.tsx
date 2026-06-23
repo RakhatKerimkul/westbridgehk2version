@@ -12,7 +12,10 @@ const Newsletter = () => {
     parentName: "",
     email: "",
     whatsappNumber: "",
-    teenAge: ""
+    studentName: "",
+    studentGrade: "",
+    subject: "",
+    background: ""
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -44,7 +47,9 @@ const Newsletter = () => {
     return () => clearInterval(timer);
   }, []);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+  ) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
   };
@@ -54,7 +59,14 @@ const Newsletter = () => {
 
     if (isSubmitting) return;
 
-    if (!formData.parentName || !formData.email || !formData.whatsappNumber || !formData.teenAge) {
+    if (
+      !formData.parentName ||
+      !formData.email ||
+      !formData.whatsappNumber ||
+      !formData.studentName ||
+      !formData.studentGrade ||
+      !formData.subject
+    ) {
       toast.error("Please fill in all required fields");
       return;
     }
@@ -66,7 +78,10 @@ const Newsletter = () => {
       payload.append("parent_name", formData.parentName);
       payload.append("email", formData.email);
       payload.append("whatsapp", formData.whatsappNumber);
-      payload.append("teen_age", formData.teenAge);
+      payload.append("student_name", formData.studentName);
+      payload.append("student_grade", formData.studentGrade);
+      payload.append("subject", formData.subject);
+      payload.append("background", formData.background);
       payload.append("source", "WestBridge Olympiad Registration");
 
       const response = await fetch("https://formspree.io/f/xojzgglz", {
@@ -89,7 +104,10 @@ const Newsletter = () => {
           parent_name: formData.parentName,
           email: formData.email,
           whatsapp: formData.whatsappNumber,
-          teen_age: Number(formData.teenAge),
+          student_name: formData.studentName,
+          student_grade: formData.studentGrade,
+          subject: formData.subject,
+          background: formData.background,
           source: "WestBridge Olympiad Registration",
         }),
       }).catch((err) => console.error("Telegram notify failed:", err));
@@ -99,7 +117,7 @@ const Newsletter = () => {
       }
 
       toast.success("Registration submitted! We'll be in touch on WhatsApp shortly.");
-      setFormData({ parentName: "", email: "", whatsappNumber: "", teenAge: "" });
+      setFormData({ parentName: "", email: "", whatsappNumber: "", studentName: "", studentGrade: "", subject: "", background: "" });
     } catch (err: any) {
       toast.error(err.message || "Submission failed");
     } finally {
@@ -139,10 +157,9 @@ const Newsletter = () => {
                 {[
                   { label: "Date", value: "18 July 2026" },
                   { label: "Location", value: "Hong Kong" },
-                  { label: "Price", value: "HK$300" },
+                  { label: "Price", value: "300 HKD" },
                   { label: "What it measures", value: "Reasoning style, current level, subject preferences" },
                   { label: "Outcome", value: "The best Olympiad direction for your child" },
-                  { label: "Subjects covered", value: "Math · Physics · Chemistry · Biology · Informatics · Geography" },
                   { label: "Next step", value: "WestBridge handles all preparation from here" },
                 ].map((item) => (
                   <div className="flex items-start gap-3" key={item.label}>
@@ -232,28 +249,73 @@ const Newsletter = () => {
                 </div>
                 
                 <div>
-                  <label className="block text-sm text-gray-600 mb-2">WhatsApp Number</label>
-                  <input 
-                    type="tel" 
-                    name="whatsappNumber" 
-                    value={formData.whatsappNumber} 
-                    onChange={handleChange} 
-                    placeholder="Enter WhatsApp number" 
-                    className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-pulse-500 focus:border-transparent" 
-                    required 
-                  />
-                </div>
-                
-                <div>
-                  <label className="block text-sm text-gray-600 mb-2">Student Age</label>
+                  <label className="block text-sm text-gray-600 mb-2">WhatsApp / Phone</label>
                   <input
-                    type="number"
-                    name="teenAge"
-                    value={formData.teenAge}
+                    type="tel"
+                    name="whatsappNumber"
+                    value={formData.whatsappNumber}
                     onChange={handleChange}
-                    placeholder="Enter student's age"
+                    placeholder="Enter WhatsApp or phone number"
                     className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-pulse-500 focus:border-transparent"
                     required
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm text-gray-600 mb-2">Student Name</label>
+                  <input
+                    type="text"
+                    name="studentName"
+                    value={formData.studentName}
+                    onChange={handleChange}
+                    placeholder="Enter student's full name"
+                    className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-pulse-500 focus:border-transparent"
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm text-gray-600 mb-2">Student Grade / Year</label>
+                  <input
+                    type="text"
+                    name="studentGrade"
+                    value={formData.studentGrade}
+                    onChange={handleChange}
+                    placeholder="e.g. Grade 9 / Year 10"
+                    className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-pulse-500 focus:border-transparent"
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm text-gray-600 mb-2">Interested Subject</label>
+                  <select
+                    name="subject"
+                    value={formData.subject}
+                    onChange={handleChange}
+                    className="w-full px-4 py-3 rounded-xl border border-gray-300 bg-white focus:outline-none focus:ring-2 focus:ring-pulse-500 focus:border-transparent"
+                    required
+                  >
+                    <option value="" disabled>Select a subject</option>
+                    <option value="Math">Math</option>
+                    <option value="Physics">Physics</option>
+                    <option value="Chemistry">Chemistry</option>
+                    <option value="Biology">Biology</option>
+                    <option value="Informatics">Informatics</option>
+                    <option value="Geography">Geography</option>
+                    <option value="Not sure yet">Not sure yet</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-sm text-gray-600 mb-2">Current School / Background</label>
+                  <textarea
+                    name="background"
+                    value={formData.background}
+                    onChange={handleChange}
+                    placeholder="Current school, grade level, any olympiad experience, and what you're hoping for"
+                    rows={4}
+                    className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-pulse-500 focus:border-transparent resize-y"
                   />
                 </div>
 
@@ -263,7 +325,7 @@ const Newsletter = () => {
                     disabled={isSubmitting}
                     className="w-full px-6 py-3 bg-pulse-500 hover:bg-pulse-600 disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-medium rounded-full transition-colors duration-300"
                   >
-                    {isSubmitting ? "Submitting..." : "Join the Test — HK$300"}
+                    {isSubmitting ? "Submitting..." : "Join the Test"}
                   </button>
                 </div>
               </form>

@@ -65,7 +65,7 @@ const Hero = () => {
                 }}
               >
                 <span className="pointer-events-none flex items-center justify-center w-full">
-                  Join the Test — HK$300
+                  Join the Test
                   <ArrowRight className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1 pointer-events-none" />
                 </span>
               </a>
@@ -87,7 +87,7 @@ const Hero = () => {
                 <div className="flex items-end justify-between gap-3">
                   <div>
                     <div className="text-3xl sm:text-4xl font-display font-bold">18 July</div>
-                    <div className="text-sm opacity-90">Hong Kong · HK$300</div>
+                    <div className="text-sm opacity-90">Hong Kong</div>
                   </div>
                   <p className="text-xs sm:text-sm opacity-90 italic max-w-[55%] text-right">
                     "No one knows what he is capable of doing until he tries."
