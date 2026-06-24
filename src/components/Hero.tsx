@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { ArrowRight } from "lucide-react";
 import medalCeremony from "@/assets/hero-hk.jpg.asset.json";
+import { useLanguage } from "@/i18n/LanguageContext";
 
 
 const Hero = () => {
+  const { t } = useLanguage();
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
@@ -30,20 +32,19 @@ const Hero = () => {
           <div className="w-full lg:w-1/2">
             <div className="pulse-chip mb-3 sm:mb-6">
               <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-pulse-500 text-white mr-2">01</span>
-              <span>Hong Kong</span>
+              <span>{t.hero.chip}</span>
             </div>
 
             <h1 className="section-title text-3xl sm:text-4xl lg:text-5xl xl:text-6xl leading-tight">
-              Olympiads are the path to the world's top universities.
+              {t.hero.title}
             </h1>
 
             <p className="section-subtitle mt-3 sm:mt-6 mb-4 sm:mb-8 leading-relaxed text-gray-950 font-normal text-base sm:text-lg text-left">
-              One diagnostic test. We choose the right subject. We handle the preparation.
-              Parents take one step — register your child for the Olympiad Thinking Test.
+              {t.hero.subtitle}
             </p>
 
             <p className="mb-6 text-sm text-gray-600">
-              Limited seats for the 18 July test.
+              {t.hero.limited}
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4">
@@ -65,7 +66,7 @@ const Hero = () => {
                 }}
               >
                 <span className="pointer-events-none flex items-center justify-center w-full">
-                  Join the Test
+                  {t.hero.cta}
                   <ArrowRight className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1 pointer-events-none" />
                 </span>
               </a>
@@ -83,14 +84,14 @@ const Hero = () => {
                 className="w-full h-[520px] sm:h-[640px] lg:h-[720px] object-cover object-center transition-transform duration-700 ease-out group-hover:scale-[1.04]"
               />
               <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-5 sm:p-7 text-white">
-                <div className="text-xs uppercase tracking-widest opacity-80 mb-1">Olympiad Thinking Test</div>
+                <div className="text-xs uppercase tracking-widest opacity-80 mb-1">{t.hero.cardLabel}</div>
                 <div className="flex items-end justify-between gap-3">
                   <div>
-                    <div className="text-3xl sm:text-4xl font-display font-bold">18 July</div>
-                    <div className="text-sm opacity-90">Hong Kong</div>
+                    <div className="text-3xl sm:text-4xl font-display font-bold">{t.hero.cardDate}</div>
+                    <div className="text-sm opacity-90">{t.hero.cardLocation}</div>
                   </div>
                   <p className="text-xs sm:text-sm opacity-90 italic max-w-[55%] text-right">
-                    "No one knows what he is capable of doing until he tries."
+                    {t.hero.cardQuote}
                   </p>
                 </div>
               </div>

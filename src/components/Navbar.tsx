@@ -1,9 +1,11 @@
 
 import React, { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Globe } from "lucide-react";
+import { useLanguage } from "@/i18n/LanguageContext";
 
 const Navbar = () => {
+  const { t, toggleLanguage } = useLanguage();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -63,7 +65,7 @@ const Navbar = () => {
         </a>
 
         {/* Desktop Navigation */}
-        <nav className="hidden md:flex space-x-8">
+        <nav className="hidden md:flex items-center space-x-8">
           <a
             href="#"
             className="nav-link"
@@ -72,23 +74,43 @@ const Navbar = () => {
               scrollToTop();
             }}
           >
-            Home
+            {t.nav.home}
           </a>
-          <a href="#why" className="nav-link">Why Olympiads</a>
-          <a href="#path" className="nav-link">Path</a>
-          <a href="#tutors" className="nav-link">Tutors</a>
-          <a href="#newsletter" className="nav-link">Test</a>
-          <a href="#newsletter" className="nav-link">Join</a>
+          <a href="#why" className="nav-link">{t.nav.why}</a>
+          <a href="#path" className="nav-link">{t.nav.path}</a>
+          <a href="#tutors" className="nav-link">{t.nav.tutors}</a>
+          <a href="#newsletter" className="nav-link">{t.nav.test}</a>
+          <a href="#newsletter" className="nav-link">{t.nav.join}</a>
+          <button
+            type="button"
+            onClick={toggleLanguage}
+            aria-label={t.nav.switchToAria}
+            className="flex items-center gap-1.5 rounded-full border border-gray-300 px-3 py-1.5 text-sm font-medium text-gray-700 hover:border-pulse-400 hover:text-pulse-500 transition-colors"
+          >
+            <Globe size={16} />
+            {t.nav.switchTo}
+          </button>
         </nav>
 
-        {/* Mobile menu button - increased touch target */}
-        <button 
-          className="md:hidden text-gray-700 p-3 focus:outline-none" 
-          onClick={toggleMenu}
-          aria-label={isMenuOpen ? "Close menu" : "Open menu"}
-        >
-          {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
-        </button>
+        {/* Mobile actions - language toggle + menu button */}
+        <div className="flex items-center gap-1 md:hidden">
+          <button
+            type="button"
+            onClick={toggleLanguage}
+            aria-label={t.nav.switchToAria}
+            className="flex items-center gap-1.5 rounded-full border border-gray-300 px-3 py-2 text-sm font-medium text-gray-700"
+          >
+            <Globe size={16} />
+            {t.nav.switchTo}
+          </button>
+          <button
+            className="text-gray-700 p-3 focus:outline-none"
+            onClick={toggleMenu}
+            aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+          >
+            {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
+        </div>
       </div>
 
       {/* Mobile Navigation - improved for better touch experience */}
@@ -118,13 +140,13 @@ const Navbar = () => {
               document.body.style.overflow = '';
             }}
           >
-            Home
+            {t.nav.home}
           </a>
-          <a href="#why" className="text-xl font-medium py-4 px-6 w-full text-center rounded-lg hover:bg-gray-100 transition-colors" onClick={() => { setIsMenuOpen(false); document.body.style.overflow = ''; }}>Why Olympiads</a>
-          <a href="#path" className="text-xl font-medium py-4 px-6 w-full text-center rounded-lg hover:bg-gray-100 transition-colors" onClick={() => { setIsMenuOpen(false); document.body.style.overflow = ''; }}>Path</a>
-          <a href="#tutors" className="text-xl font-medium py-4 px-6 w-full text-center rounded-lg hover:bg-gray-100 transition-colors" onClick={() => { setIsMenuOpen(false); document.body.style.overflow = ''; }}>Tutors</a>
-          <a href="#newsletter" className="text-xl font-medium py-4 px-6 w-full text-center rounded-lg hover:bg-gray-100 transition-colors" onClick={() => { setIsMenuOpen(false); document.body.style.overflow = ''; }}>Test</a>
-          <a href="#newsletter" className="text-xl font-medium py-4 px-6 w-full text-center rounded-lg hover:bg-pulse-500 hover:text-white bg-pulse-50 text-pulse-600 transition-colors font-semibold" onClick={() => { setIsMenuOpen(false); document.body.style.overflow = ''; }}>Join the Test</a>
+          <a href="#why" className="text-xl font-medium py-4 px-6 w-full text-center rounded-lg hover:bg-gray-100 transition-colors" onClick={() => { setIsMenuOpen(false); document.body.style.overflow = ''; }}>{t.nav.why}</a>
+          <a href="#path" className="text-xl font-medium py-4 px-6 w-full text-center rounded-lg hover:bg-gray-100 transition-colors" onClick={() => { setIsMenuOpen(false); document.body.style.overflow = ''; }}>{t.nav.path}</a>
+          <a href="#tutors" className="text-xl font-medium py-4 px-6 w-full text-center rounded-lg hover:bg-gray-100 transition-colors" onClick={() => { setIsMenuOpen(false); document.body.style.overflow = ''; }}>{t.nav.tutors}</a>
+          <a href="#newsletter" className="text-xl font-medium py-4 px-6 w-full text-center rounded-lg hover:bg-gray-100 transition-colors" onClick={() => { setIsMenuOpen(false); document.body.style.overflow = ''; }}>{t.nav.test}</a>
+          <a href="#newsletter" className="text-xl font-medium py-4 px-6 w-full text-center rounded-lg hover:bg-pulse-500 hover:text-white bg-pulse-50 text-pulse-600 transition-colors font-semibold" onClick={() => { setIsMenuOpen(false); document.body.style.overflow = ''; }}>{t.nav.joinTest}</a>
         </nav>
       </div>
     </header>

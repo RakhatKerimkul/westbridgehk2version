@@ -1,32 +1,30 @@
 import React from "react";
+import { useLanguage } from "@/i18n/LanguageContext";
 
-interface Node {
-  num: string;
-  title: string;
-  caption: string;
-  wide?: boolean;
-}
-
-const nodes: Node[] = [
-  { num: "01", title: "The Thinking Test", caption: "The entry gate" },
-  { num: "02", title: "Choose Your Discipline", caption: "Math · Physics · Chemistry · Biology · Informatics" },
-  { num: "03", title: "Preparation", caption: "Weekly coaching · problem sets · mock olympiads · mentorship", wide: true },
-  { num: "04", title: "Win the Olympiad", caption: "Regional → National → International" },
-  { num: "05", title: "Step Into Your Future", caption: "Top-tier university admission" },
+// Structural data (number + shape) stays here; title/caption come from
+// translations (same order).
+const nodeMeta: { num: string; wide?: boolean }[] = [
+  { num: "01" },
+  { num: "02" },
+  { num: "03", wide: true },
+  { num: "04" },
+  { num: "05" },
 ];
 
 const Schedule = () => {
+  const { t } = useLanguage();
+  const nodes = nodeMeta.map((meta, i) => ({ ...meta, ...t.path.nodes[i] }));
   return (
     <section className="py-16 sm:py-24 relative bg-[#FAF6EE]" id="path">
       <div className="section-container">
         <div className="mb-12 sm:mb-16">
           <div className="pulse-chip mb-4">
-            <span>Student Path</span>
+            <span>{t.path.chip}</span>
           </div>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold mb-3">
-            From one test to a university-ready profile
+            {t.path.title}
           </h2>
-          <p className="text-pulse-500 font-medium tracking-wide">Secure Your Spot →</p>
+          <p className="text-pulse-500 font-medium tracking-wide">{t.path.cta}</p>
         </div>
 
         {/* Desktop / tablet diagram */}

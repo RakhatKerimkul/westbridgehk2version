@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { toast } from "sonner";
+import { useLanguage } from "@/i18n/LanguageContext";
 
 declare global {
   interface Window {
@@ -8,6 +9,7 @@ declare global {
 }
 
 const Newsletter = () => {
+  const { t } = useLanguage();
   const [formData, setFormData] = useState({
     parentName: "",
     email: "",
@@ -67,7 +69,7 @@ const Newsletter = () => {
       !formData.studentGrade ||
       !formData.subject
     ) {
-      toast.error("Please fill in all required fields");
+      toast.error(t.newsletter.errorRequired);
       return;
     }
 
@@ -92,7 +94,7 @@ const Newsletter = () => {
 
       if (!response.ok) {
         const data = await response.json().catch(() => null);
-        throw new Error(data?.errors?.[0]?.message || "Submission failed");
+        throw new Error(data?.errors?.[0]?.message || t.newsletter.errorFailed);
       }
 
       // Notify the team on Telegram (fire-and-forget side-channel — never blocks
@@ -116,10 +118,10 @@ const Newsletter = () => {
         window.fbq('track', 'Lead');
       }
 
-      toast.success("Registration submitted! We'll be in touch on WhatsApp shortly.");
+      toast.success(t.newsletter.success);
       setFormData({ parentName: "", email: "", whatsappNumber: "", studentName: "", studentGrade: "", subject: "", background: "" });
     } catch (err: any) {
-      toast.error(err.message || "Submission failed");
+      toast.error(err.message || t.newsletter.errorFailed);
     } finally {
       setIsSubmitting(false);
     }
@@ -131,7 +133,7 @@ const Newsletter = () => {
         <div className="flex items-center gap-4 mb-6">
           <div className="pulse-chip">
             <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-pulse-500 text-white mr-2">05</span>
-            <span>Join the Test</span>
+            <span>{t.newsletter.chip}</span>
           </div>
         </div>
 
@@ -144,24 +146,17 @@ const Newsletter = () => {
               backgroundPosition: "center"
             }}>
               <h2 className="text-2xl sm:text-3xl font-display text-white font-bold">
-                The Olympiad Thinking Test
+                {t.newsletter.detailsTitle}
               </h2>
             </div>
 
             <div className="bg-white p-4 sm:p-8" style={{ backgroundColor: "#FFFFFF", border: "1px solid #ECECEC" }}>
               <h3 className="text-lg sm:text-xl font-display mb-6 sm:mb-8">
-                One test to discover where your child can win.
+                {t.newsletter.detailsSubtitle}
               </h3>
 
               <div className="space-y-4 sm:space-y-6">
-                {[
-                  { label: "Date", value: "18 July 2026" },
-                  { label: "Location", value: "Hong Kong" },
-                  { label: "Price", value: "300 HKD" },
-                  { label: "What it measures", value: "Reasoning style, current level, subject preferences" },
-                  { label: "Outcome", value: "The best Olympiad direction for your child" },
-                  { label: "Next step", value: "WestBridge handles all preparation from here" },
-                ].map((item) => (
+                {t.newsletter.details.map((item) => (
                   <div className="flex items-start gap-3" key={item.label}>
                     <div className="w-6 h-6 rounded-full bg-black flex items-center justify-center mt-1 flex-shrink-0">
                       <svg width="14" height="10" viewBox="0 0 14 10" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -179,23 +174,23 @@ const Newsletter = () => {
 
               {/* Countdown Timer */}
               <div className="mt-8 p-4 bg-gradient-to-r from-pulse-50 to-pulse-100 rounded-xl border border-pulse-200">
-                <h4 className="text-lg font-semibold text-pulse-800 mb-4 text-center">Test Countdown</h4>
+                <h4 className="text-lg font-semibold text-pulse-800 mb-4 text-center">{t.newsletter.countdownTitle}</h4>
                 <div className="grid grid-cols-4 gap-2 text-center">
                   <div className="bg-white rounded-lg p-3 shadow-sm">
                     <div className="text-2xl font-bold text-pulse-600">{timeLeft.days}</div>
-                    <div className="text-xs text-gray-600">Days</div>
+                    <div className="text-xs text-gray-600">{t.newsletter.days}</div>
                   </div>
                   <div className="bg-white rounded-lg p-3 shadow-sm">
                     <div className="text-2xl font-bold text-pulse-600">{timeLeft.hours}</div>
-                    <div className="text-xs text-gray-600">Hours</div>
+                    <div className="text-xs text-gray-600">{t.newsletter.hours}</div>
                   </div>
                   <div className="bg-white rounded-lg p-3 shadow-sm">
                     <div className="text-2xl font-bold text-pulse-600">{timeLeft.minutes}</div>
-                    <div className="text-xs text-gray-600">Minutes</div>
+                    <div className="text-xs text-gray-600">{t.newsletter.minutes}</div>
                   </div>
                   <div className="bg-white rounded-lg p-3 shadow-sm">
                     <div className="text-2xl font-bold text-pulse-600">{timeLeft.seconds}</div>
-                    <div className="text-xs text-gray-600">Seconds</div>
+                    <div className="text-xs text-gray-600">{t.newsletter.seconds}</div>
                   </div>
                 </div>
               </div>
@@ -210,10 +205,10 @@ const Newsletter = () => {
               backgroundPosition: "center"
             }}>
               <div className="inline-block px-4 sm:px-6 py-2 border border-white text-white rounded-full text-xs mb-4">
-                Join the Test
+                {t.newsletter.formBadge}
               </div>
               <h2 className="text-2xl sm:text-3xl font-display text-white font-bold mt-auto">
-                Register your child
+                {t.newsletter.formTitle}
               </h2>
             </div>
             
@@ -223,72 +218,72 @@ const Newsletter = () => {
             }}>
               <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
                 <div>
-                  <label className="block text-sm text-gray-600 mb-2">Parent Name</label>
-                  <input 
-                    type="text" 
-                    name="parentName" 
-                    value={formData.parentName} 
-                    onChange={handleChange} 
-                    placeholder="Enter parent's full name" 
-                    className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-pulse-500 focus:border-transparent" 
-                    required 
+                  <label className="block text-sm text-gray-600 mb-2">{t.newsletter.parentName}</label>
+                  <input
+                    type="text"
+                    name="parentName"
+                    value={formData.parentName}
+                    onChange={handleChange}
+                    placeholder={t.newsletter.parentNamePlaceholder}
+                    className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-pulse-500 focus:border-transparent"
+                    required
                   />
                 </div>
-                
+
                 <div>
-                  <label className="block text-sm text-gray-600 mb-2">Email</label>
-                  <input 
-                    type="email" 
-                    name="email" 
-                    value={formData.email} 
-                    onChange={handleChange} 
-                    placeholder="Enter email address" 
-                    className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-pulse-500 focus:border-transparent" 
-                    required 
+                  <label className="block text-sm text-gray-600 mb-2">{t.newsletter.email}</label>
+                  <input
+                    type="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    placeholder={t.newsletter.emailPlaceholder}
+                    className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-pulse-500 focus:border-transparent"
+                    required
                   />
                 </div>
-                
+
                 <div>
-                  <label className="block text-sm text-gray-600 mb-2">WhatsApp / Phone</label>
+                  <label className="block text-sm text-gray-600 mb-2">{t.newsletter.whatsapp}</label>
                   <input
                     type="tel"
                     name="whatsappNumber"
                     value={formData.whatsappNumber}
                     onChange={handleChange}
-                    placeholder="Enter WhatsApp or phone number"
+                    placeholder={t.newsletter.whatsappPlaceholder}
                     className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-pulse-500 focus:border-transparent"
                     required
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm text-gray-600 mb-2">Student Name</label>
+                  <label className="block text-sm text-gray-600 mb-2">{t.newsletter.studentName}</label>
                   <input
                     type="text"
                     name="studentName"
                     value={formData.studentName}
                     onChange={handleChange}
-                    placeholder="Enter student's full name"
+                    placeholder={t.newsletter.studentNamePlaceholder}
                     className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-pulse-500 focus:border-transparent"
                     required
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm text-gray-600 mb-2">Student Grade / Year</label>
+                  <label className="block text-sm text-gray-600 mb-2">{t.newsletter.studentGrade}</label>
                   <input
                     type="text"
                     name="studentGrade"
                     value={formData.studentGrade}
                     onChange={handleChange}
-                    placeholder="e.g. Grade 9 / Year 10"
+                    placeholder={t.newsletter.studentGradePlaceholder}
                     className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-pulse-500 focus:border-transparent"
                     required
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm text-gray-600 mb-2">Interested Subject</label>
+                  <label className="block text-sm text-gray-600 mb-2">{t.newsletter.subject}</label>
                   <select
                     name="subject"
                     value={formData.subject}
@@ -296,24 +291,20 @@ const Newsletter = () => {
                     className="w-full px-4 py-3 rounded-xl border border-gray-300 bg-white focus:outline-none focus:ring-2 focus:ring-pulse-500 focus:border-transparent"
                     required
                   >
-                    <option value="" disabled>Select a subject</option>
-                    <option value="Math">Math</option>
-                    <option value="Physics">Physics</option>
-                    <option value="Chemistry">Chemistry</option>
-                    <option value="Biology">Biology</option>
-                    <option value="Informatics">Informatics</option>
-                    <option value="Geography">Geography</option>
-                    <option value="Not sure yet">Not sure yet</option>
+                    <option value="" disabled>{t.newsletter.subjectPlaceholder}</option>
+                    {t.newsletter.subjectOptions.map((opt) => (
+                      <option key={opt.value} value={opt.value}>{opt.label}</option>
+                    ))}
                   </select>
                 </div>
 
                 <div>
-                  <label className="block text-sm text-gray-600 mb-2">Current School / Background</label>
+                  <label className="block text-sm text-gray-600 mb-2">{t.newsletter.background}</label>
                   <textarea
                     name="background"
                     value={formData.background}
                     onChange={handleChange}
-                    placeholder="Current school, grade level, any olympiad experience, and what you're hoping for"
+                    placeholder={t.newsletter.backgroundPlaceholder}
                     rows={4}
                     className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-pulse-500 focus:border-transparent resize-y"
                   />
@@ -325,7 +316,7 @@ const Newsletter = () => {
                     disabled={isSubmitting}
                     className="w-full px-6 py-3 bg-pulse-500 hover:bg-pulse-600 disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-medium rounded-full transition-colors duration-300"
                   >
-                    {isSubmitting ? "Submitting..." : "Join the Test"}
+                    {isSubmitting ? t.newsletter.submitting : t.newsletter.submit}
                   </button>
                 </div>
               </form>
