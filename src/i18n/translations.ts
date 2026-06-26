@@ -206,7 +206,7 @@ export const en = {
     background: "Current School / Background",
     backgroundPlaceholder:
       "Current school, grade level, any olympiad experience, and what you're hoping for",
-    submit: "Join the Test",
+    submit: "Submit",
     submitting: "Submitting...",
     errorRequired: "Please fill in all required fields",
     errorFailed: "Submission failed",
