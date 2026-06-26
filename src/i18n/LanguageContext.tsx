@@ -2,7 +2,7 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 import { Language, Translation, translations } from "./translations";
 
 const STORAGE_KEY = "westbridge-lang";
-const DEFAULT_LANGUAGE: Language = "zh"; // Cantonese is the main version.
+const DEFAULT_LANGUAGE: Language = "en"; // Site is English-only.
 
 interface LanguageContextValue {
   language: Language;
@@ -15,9 +15,8 @@ interface LanguageContextValue {
 const LanguageContext = createContext<LanguageContextValue | undefined>(undefined);
 
 const getInitialLanguage = (): Language => {
-  if (typeof window === "undefined") return DEFAULT_LANGUAGE;
-  const stored = window.localStorage.getItem(STORAGE_KEY);
-  return stored === "zh" || stored === "en" ? stored : DEFAULT_LANGUAGE;
+  // English-only: ignore any previously stored language preference.
+  return DEFAULT_LANGUAGE;
 };
 
 export const LanguageProvider = ({ children }: { children: React.ReactNode }) => {

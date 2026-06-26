@@ -1,11 +1,11 @@
 
 import React, { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
-import { Menu, X, Globe } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { useLanguage } from "@/i18n/LanguageContext";
 
 const Navbar = () => {
-  const { t, toggleLanguage } = useLanguage();
+  const { t } = useLanguage();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -81,28 +81,10 @@ const Navbar = () => {
           <a href="#tutors" className="nav-link">{t.nav.tutors}</a>
           <a href="#newsletter" className="nav-link">{t.nav.test}</a>
           <a href="#newsletter" className="nav-link">{t.nav.join}</a>
-          <button
-            type="button"
-            onClick={toggleLanguage}
-            aria-label={t.nav.switchToAria}
-            className="flex items-center gap-1.5 rounded-full border border-gray-300 px-3 py-1.5 text-sm font-medium text-gray-700 hover:border-pulse-400 hover:text-pulse-500 transition-colors"
-          >
-            <Globe size={16} />
-            {t.nav.switchTo}
-          </button>
         </nav>
 
-        {/* Mobile actions - language toggle + menu button */}
+        {/* Mobile actions - menu button */}
         <div className="flex items-center gap-1 md:hidden">
-          <button
-            type="button"
-            onClick={toggleLanguage}
-            aria-label={t.nav.switchToAria}
-            className="flex items-center gap-1.5 rounded-full border border-gray-300 px-3 py-2 text-sm font-medium text-gray-700"
-          >
-            <Globe size={16} />
-            {t.nav.switchTo}
-          </button>
           <button
             className="text-gray-700 p-3 focus:outline-none"
             onClick={toggleMenu}
