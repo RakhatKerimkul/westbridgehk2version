@@ -1,12 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { toast } from "sonner";
 import { useLanguage } from "@/i18n/LanguageContext";
-
-declare global {
-  interface Window {
-    fbq: any;
-  }
-}
+import { trackMetaEvent } from "@/lib/metaPixel";
 
 const Newsletter = () => {
   const { t } = useLanguage();
@@ -114,11 +109,12 @@ const Newsletter = () => {
         }),
       }).catch((err) => console.error("Telegram notify failed:", err));
 
-      if (window.fbq) {
-        window.fbq('track', 'Lead');
-      }
-
       toast.success(t.newsletter.success);
+
+      // Meta Pixel Lead event — fires ONLY after a confirmed successful
+      // submission (never on page load, never on error).
+      trackMetaEvent("Lead");
+
       setFormData({ parentName: "", email: "", whatsappNumber: "", studentName: "", studentGrade: "", subject: "", background: "" });
     } catch (err: any) {
       toast.error(err.message || t.newsletter.errorFailed);
