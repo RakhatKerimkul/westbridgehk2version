@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Mail, Phone, Instagram, MessageCircle } from "lucide-react";
 import { useLanguage } from "@/i18n/LanguageContext";
+import { trackMetaEvent } from "@/lib/metaPixel";
 
 const Footer = () => {
   const { t } = useLanguage();
@@ -14,7 +15,13 @@ const Footer = () => {
             <p className="text-gray-600">{t.footer.tagline}</p>
           </div>
           <div className="space-y-2 md:text-right">
-            <a href="https://wa.me/message/ABMUZYYPNTEVI1" target="_blank" rel="noreferrer" className="flex md:justify-end items-center gap-2 text-gray-700 hover:text-pulse-500">
+            <a
+              href="https://wa.me/message/ABMUZYYPNTEVI1"
+              target="_blank"
+              rel="noreferrer"
+              onClick={() => trackMetaEvent("Contact")}
+              className="flex md:justify-end items-center gap-2 text-gray-700 hover:text-pulse-500"
+            >
               <MessageCircle size={16} /> WhatsApp
             </a>
             <a href="mailto:westbridgehk@gmail.com" className="flex md:justify-end items-center gap-2 text-gray-700 hover:text-pulse-500">

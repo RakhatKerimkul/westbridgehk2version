@@ -1,12 +1,8 @@
 
 import React, { useState, useEffect } from "react";
 import { toast } from "sonner";
+import { trackMetaEvent } from "@/lib/metaPixel";
 
-declare global {
-  interface Window {
-    fbq: any;
-  }
-}
 const DetailsSection = () => {
   const [formData, setFormData] = useState({
     parentName: "",
@@ -97,12 +93,12 @@ const DetailsSection = () => {
         }),
       }).catch((err) => console.error("Telegram notify failed:", err));
 
-      // Track lead conversion
-      if (window.fbq) {
-        window.fbq('track', 'Lead');
-      }
-
       toast.success("Registration submitted successfully!");
+
+      // Meta Pixel Lead event — fires ONLY after a confirmed successful
+      // submission (never on page load, never on error).
+      trackMetaEvent("Lead");
+
       setFormData({ parentName: "", email: "", whatsappNumber: "", teenAge: "" });
     } catch (err: any) {
       toast.error(err.message || "Submission failed");
